@@ -42,8 +42,27 @@ const CONFIG = {
   },
 };
 
+// Verificar se estamos em modo desenvolvimento
+const isDevelopment =
+  CONFIG.brevo.apiKey.includes("xxxxxxxx") ||
+  CONFIG.brevo.apiKey === "sua_api_key_aqui";
+
 // Exemplo de função para integrar com Brevo API
 async function subscribeToNewsletter(email) {
+  // Modo desenvolvimento - simular sucesso
+  if (isDevelopment) {
+    console.log("🧪 MODO DESENVOLVIMENTO - Newsletter:", email);
+
+    // Simular delay de rede
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return {
+      success: true,
+      message: "Email inscrito com sucesso! (MODO DESENVOLVIMENTO)",
+    };
+  }
+
+  // Modo produção - envio real
   try {
     const response = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
@@ -78,6 +97,24 @@ async function subscribeToNewsletter(email) {
 
 // Exemplo de função para enviar email de contato
 async function sendContactEmail(formData) {
+  // Modo desenvolvimento - simular sucesso
+  if (isDevelopment) {
+    console.log("🧪 MODO DESENVOLVIMENTO - Formulário de Contato:");
+    console.log("Nome:", formData.nome);
+    console.log("Email:", formData.email);
+    console.log("WhatsApp:", formData.whatsapp);
+    console.log("Tipo de Negócio:", formData.tipoNegocio);
+
+    // Simular delay de rede
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    return {
+      success: true,
+      message: "Mensagem enviada com sucesso! (MODO DESENVOLVIMENTO)",
+    };
+  }
+
+  // Modo produção - envio real
   try {
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
@@ -122,6 +159,13 @@ async function sendContactEmail(formData) {
     };
   }
 }
+
+// Mostrar status do modo atual
+console.log(
+  isDevelopment
+    ? "🧪 MODO DESENVOLVIMENTO - Formulários em modo simulação"
+    : "🚀 MODO PRODUÇÃO - Enviando emails reais via Brevo"
+);
 
 // Exportar configurações e funções (se usando módulos)
 if (typeof module !== "undefined" && module.exports) {
