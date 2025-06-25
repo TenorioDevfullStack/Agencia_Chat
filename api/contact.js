@@ -66,7 +66,13 @@ export default async function handler(req, res) {
         message: "Contato enviado com sucesso!",
       });
     } else {
-      throw new Error("Erro na API do Brevo");
+      const errorBody = await response.text();
+      console.error("Erro na API do Brevo:", errorBody);
+      res.status(500).json({
+        success: false,
+        message: "Erro ao enviar contato via Brevo.",
+        error: errorBody,
+      });
     }
   } catch (error) {
     console.error("Erro no envio:", error);
