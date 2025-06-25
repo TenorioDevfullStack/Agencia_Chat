@@ -1,4 +1,4 @@
-// Navegação Mobile
+// Navegação Mobile e funcionalidades da página
 document.addEventListener("DOMContentLoaded", function () {
   const navToggle = document.getElementById("nav-toggle");
   const navMenu = document.getElementById("nav-menu");
@@ -296,53 +296,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   images.forEach((img) => imageObserver.observe(img));
 
-  // Feedback visual para botões CTA
-  const ctaButtons = document.querySelectorAll(".cta-button");
-  ctaButtons.forEach((button) => {
-    button.addEventListener("click", function (e) {
-      // Criar efeito ripple
-      const ripple = document.createElement("span");
-      const rect = this.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - size / 2;
-      const y = e.clientY - rect.top - size / 2;
-
-      ripple.style.cssText = `
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.5);
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                left: ${x}px;
-                top: ${y}px;
-                width: ${size}px;
-                height: ${size}px;
-            `;
-
-      this.appendChild(ripple);
-
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
-    });
-  });
-
-  // CSS para animação ripple
-  const style = document.createElement("style");
-  style.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-        .cta-button {
-            position: relative;
-            overflow: hidden;
-        }
-    `;
-  document.head.appendChild(style);
-
   // Newsletter Form
   const newsletterForm = document.getElementById("newsletter-form");
   if (newsletterForm) {
@@ -458,35 +411,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
-});
-
-// Função para tracking de eventos (Google Analytics, etc.)
-function trackEvent(eventName, parameters = {}) {
-  // Implementar tracking aqui
-  console.log("Event tracked:", eventName, parameters);
-
-  // Exemplo para Google Analytics 4
-  if (typeof gtag !== "undefined") {
-    gtag("event", eventName, parameters);
-  }
-
-  // Exemplo para Facebook Pixel
-  if (typeof fbq !== "undefined") {
-    fbq("track", eventName, parameters);
-  }
-}
-
-// Aplicar tracking aos botões principais
-document.addEventListener("DOMContentLoaded", function () {
-  const ctaButtons = document.querySelectorAll(".cta-button");
-  ctaButtons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      trackEvent("cta_click", {
-        button_position: index + 1,
-        button_text: button.textContent.trim(),
-      });
-    });
-  });
 
   // Track scroll depth
   let maxScroll = 0;
@@ -510,3 +434,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Função para tracking de eventos (Google Analytics, etc.)
+function trackEvent(eventName, parameters = {}) {
+  // Implementar tracking aqui
+  console.log("Event tracked:", eventName, parameters);
+
+  // Exemplo para Google Analytics 4
+  if (typeof gtag !== "undefined") {
+    gtag("event", eventName, parameters);
+  }
+
+  // Exemplo para Facebook Pixel
+  if (typeof fbq !== "undefined") {
+    fbq("track", eventName, parameters);
+  }
+}
