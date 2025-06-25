@@ -104,7 +104,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof sendContactEmail === "function") {
         sendContactEmail(formData)
           .then((result) => {
-            if (result.success) {
+            console.log("Resultado recebido:", result);
+
+            if (result && result.success) {
               alert(
                 "Obrigado! Entraremos em contato em breve para agendar seu diagnóstico gratuito."
               );
@@ -114,7 +116,9 @@ document.addEventListener("DOMContentLoaded", function () {
               alert(
                 "Houve um erro ao enviar sua mensagem. Tente novamente ou entre em contato diretamente."
               );
-              trackEvent("contact_form_error", { error: result.message });
+              trackEvent("contact_form_error", {
+                error: result ? result.message : "Resultado indefinido",
+              });
             }
 
             submitButton.textContent = originalText;
